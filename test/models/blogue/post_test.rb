@@ -36,7 +36,7 @@ module Blogue
     end
 
     test 'uses file creation time when no meta date' do
-      assert_equal '2013-10-19 19:54:41 UTC',
+      assert_equal File.ctime('test/fixtures/posts/minimal-post.md').utc.to_s,
         Post.find('minimal-post').time.utc.to_s
     end
 
