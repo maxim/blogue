@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/maxim/blogue.png)](https://travis-ci.org/maxim/blogue)
 
-Blogue is the static page blog that is also a rails engine. It means that you get all of rails, yet your blog is static. Best of both worlds.
+Blogue is a rails model for static blog posts, wrapped in an engine. It means that you can have blog posts as static files (kind of like views) inside your rails app, and hook up posts like any other resource.
 
 ## What you get
 
