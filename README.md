@@ -87,9 +87,9 @@ You just hook it up by hand any way you want.
 
   ![picture](/assets/picture.jpg)
 
-  ~~~ruby
+  \~\~\~ruby
   foo = 'foo' # a codeblock
-  ~~~
+  \~\~\~
 
   <!--meta
     date: 2013-10-21
