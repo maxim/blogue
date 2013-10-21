@@ -20,7 +20,13 @@ You just hook it up by hand any way you want.
 ## Usage
 
 1. Generate a rails app (or use existing)
-2. Add `gem 'blogue'` to Gemfile and bundle
+2. Add all needed gems to Gemfile and bundle
+  ~~~ruby
+  gem 'kramdown'
+  gem 'rouge'
+  gem 'blogue'
+  ~~~
+
 3. Create a model `app/models/post.rb` (the name 'Post' is chosen at random)
   ~~~ruby
   class Post < Blogue::Post
@@ -80,20 +86,20 @@ You just hook it up by hand any way you want.
 8. Create a directory `app/posts` (that's default location of posts)
 9. Create a directory `app/posts/assets` (it's added to assets paths by default)
 10. Add a post like `app/posts/my-first-post.md`
-  ~~~markdown
+  ```markdown
   # Yay my first post
 
   This is some text.
 
   ![picture](/assets/picture.jpg)
 
-  \~\~\~ruby
+  ~~~ruby
   foo = 'foo' # a codeblock
-  \~\~\~
+  ~~~
 
   <!--meta
     date: 2013-10-21
     tldr: Awesome
   -->
-  ~~~
+  ```
 11. Start server and go to http://localhost:3000/my-first-post
