@@ -1,0 +1,9 @@
+<%= link_to 'index', root_path %>
+
+<%=raw render file: @post.path %>
+
+<% if @post.date %>
+<p>
+Published on <%= @post.date.to_s(:long) %>
+</p>
+<% end %>
