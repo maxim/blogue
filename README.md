@@ -85,7 +85,8 @@ You just hook it up by hand any way you want.
 
 8. Create a directory `app/posts` (that's default location of posts)
 9. Create a directory `app/posts/assets` (it's added to assets paths by default)
-10. Add a post like `app/posts/my-first-post.md`  
+10. Add a post like `app/posts/my-first-post.md`
+
         # Yay my first post
 
         This is some text.
