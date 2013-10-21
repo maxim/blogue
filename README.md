@@ -24,39 +24,39 @@ You just hook it up by hand any way you want.
 1. Generate a rails app (or use existing)
 2. Add all needed gems to Gemfile and bundle
   ~~~ruby
-  gem 'kramdown'
-  gem 'rouge'
-  gem 'blogue'
+    gem 'kramdown'
+    gem 'rouge'
+    gem 'blogue'
   ~~~
 
 3. Create a model `app/models/post.rb` (the name 'Post' is chosen at random)
   ~~~ruby
-  class Post < Blogue::Post
-    # Here you can override inherited methods any way you like.
-    # See app/models/blogue/post.rb to see what you have
-  end
+    class Post < Blogue::Post
+      # Here you can override inherited methods any way you like.
+      # See app/models/blogue/post.rb to see what you have
+    end
   ~~~
 
 4. Create a controller `app/controllers/posts_controller.rb`
   ~~~ruby
-  class PostsController < ApplicationController
-    def index
-      @posts = Post.all
-    end
+    class PostsController < ApplicationController
+      def index
+        @posts = Post.all
+      end
 
-    def show
-      @post = Post.find(id)
+      def show
+        @post = Post.find(id)
+      end
     end
-  end
   ~~~
 
 5. Add a route to your `config/routes.rb` like this
   ~~~ruby
-  # If you want an index page
-  root to: 'posts#index'
+    # If you want an index page
+    root to: 'posts#index'
 
-  # Whitelist of your posts
-  Post.all.each { |post| get "/#{post.id}", to: 'posts#show', id: post.id }
+    # Whitelist of your posts
+    Post.all.each { |post| get "/#{post.id}", to: 'posts#show', id: post.id }
   ~~~
 
 6. Add `app/views/posts/index.html.erb` for your index page
@@ -76,13 +76,13 @@ You just hook it up by hand any way you want.
 
 7. Add `app/views/posts/show.html.erb` for your post page
   ~~~erb
-  <%= link_to 'index', root_path %>
+    <%= link_to 'index', root_path %>
 
-  <%=raw render file: @post.path %>
+    <%=raw render file: @post.path %>
 
-  <% if @post.date %>
-  <p>Published on <%= @post.date.to_s(:long) %></p>
-  <% end %>
+    <% if @post.date %>
+    <p>Published on <%= @post.date.to_s(:long) %></p>
+    <% end %>
   ~~~
 
 8. Create a directory `app/posts` (that's default location of posts)
