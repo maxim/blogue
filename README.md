@@ -86,20 +86,19 @@ You just hook it up by hand any way you want.
 8. Create a directory `app/posts` (that's default location of posts)
 9. Create a directory `app/posts/assets` (it's added to assets paths by default)
 10. Add a post like `app/posts/my-first-post.md`
-  ```markdown
-  # Yay my first post
+        # Yay my first post
 
-  This is some text.
+        This is some text.
 
-  ![picture](/assets/picture.jpg)
+        ![picture](/assets/picture.jpg)
 
-  ~~~ruby
-  foo = 'foo' # a codeblock
-  ~~~
+        ~~~ruby
+        foo = 'foo' # a codeblock
+        ~~~
 
-  <!--meta
-    date: 2013-10-21
-    tldr: Awesome
-  -->
-  ```
+        <!--meta
+          date: 2013-10-21
+          tldr: Awesome
+        -->
+
 11. Start server and go to http://localhost:3000/my-first-post
