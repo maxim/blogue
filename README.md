@@ -1,5 +1,7 @@
 # Blogue
 
+[![Build Status](https://api.travis-ci.org/maxim/blogue.png)](https://travis-ci.org/maxim/blogue)
+
 Blogue is the static page blog that is also a rails engine. It means that you get all of rails, yet your blog is static. Best of both worlds.
 
 ## What you get
