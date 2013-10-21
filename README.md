@@ -16,8 +16,9 @@ Blogue is the static page blog that is also a rails engine. It means that you ge
 * Default controllers
 * Default views
 * Generators
+* Comments, tags or pretty much any functionality
 
-You just hook it up by hand any way you want.
+There are thousands of gems that you can pick from to do that stuff.
 
 ## Usage
 
