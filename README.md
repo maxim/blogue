@@ -46,18 +46,16 @@ There are thousands of gems that you can pick from to do that stuff.
       end
 
       def show
-        @post = Post.find(id)
+        @post = Post.find(params[:id]) ||
+          raise(ActionController::RoutingError.new('Not Found'))
       end
     end
   ~~~
 
 5. Add a route to your `config/routes.rb` like this
   ~~~ruby
-    # If you want an index page
-    root to: 'posts#index'
-
-    # Whitelist of your posts
-    Post.all.each { |post| get "/#{post.id}", to: 'posts#show', id: post.id }
+    root to: 'posts#index' # if you want an index page
+    get '/:id', to: 'posts#show'
   ~~~
 
 6. Add `app/views/posts/index.html.erb` for your index page
