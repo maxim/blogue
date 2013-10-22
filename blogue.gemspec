@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/maxim/blogue"
   s.summary     = "Small static blog engine for Rails"
   s.description = "If it wasn't in BLOGUE, it wasn't in blogue."
+  s.licenses    = ['MIT']
 
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
