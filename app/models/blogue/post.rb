@@ -60,6 +60,10 @@ module Blogue
       meta['tldr']
     end
 
+    def author_name
+      meta_author_name || config_author_name || whoami_author_name
+    end
+
     def meta
       YAML.load(
         body.lines.select do |line|
@@ -100,6 +104,18 @@ module Blogue
 
     def filename_title
       id.split(/[-_]/).join(' ').capitalize
+    end
+
+    def meta_author_name
+      meta['author']
+    end
+
+    def config_author_name
+      Blogue.author_name
+    end
+
+    def whoami_author_name
+      `whoami`.strip
     end
   end
 end

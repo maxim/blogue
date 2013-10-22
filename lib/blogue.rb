@@ -5,6 +5,7 @@ module Blogue
   mattr_accessor :assets_path
   mattr_accessor :markdown_format_handler
   mattr_accessor :kramdown_codeblock_handler
+  mattr_accessor :author_name
 
   self.posts_path = 'app/posts'
 
