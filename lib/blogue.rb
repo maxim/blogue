@@ -1,14 +1,24 @@
-require "blogue/engine"
+require 'blogue/engine'
+require 'digest'
 
 module Blogue
-  mattr_accessor :posts_path
-  mattr_accessor :assets_path
-  mattr_accessor :markdown_format_handler
-  mattr_accessor :kramdown_codeblock_handler
   mattr_accessor :author_name
+  mattr_accessor :assets_path
 
+  mattr_accessor :posts_path
   self.posts_path = 'app/posts'
 
+  mattr_accessor :checksum_calc
+  self.checksum_calc = -> post do
+    Digest::MD5.hexdigest([post.id, post.author_name, post.body].join)
+  end
+
+  mattr_accessor :blanket_checksum_calc
+  self.blanket_checksum_calc = -> do
+    Digest::MD5.hexdigest(checksums.values.sort.join)
+  end
+
+  mattr_accessor :markdown_format_handler
   def self.setup_kramdown_for_handling_md_files
     require 'kramdown/converter/blogue'
 
@@ -20,6 +30,7 @@ module Blogue
     ActionView::Template.register_template_handler :md, markdown_format_handler
   end
 
+  mattr_accessor :kramdown_codeblock_handler
   def self.use_rouge_codeblock_handler
     self.kramdown_codeblock_handler ||= -> el, indent {
       attr = el.attr.dup
@@ -31,5 +42,17 @@ module Blogue
         Rouge.highlight(el.value, 'text', 'html')
       end
     }
+  end
+
+  mattr_accessor :checksums
+  def self.set_checksums
+    self.checksums = Hash[
+      Post.all.map{ |p| [p.id, checksum_calc.(p)] }
+    ]
+  end
+
+  mattr_accessor :blanket_checksum
+  def self.set_blanket_checksum
+    self.blanket_checksum = blanket_checksum_calc.()
   end
 end

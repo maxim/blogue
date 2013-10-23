@@ -14,6 +14,8 @@ module Blogue
       if defined?(Kramdown)
         Blogue.setup_kramdown_for_handling_md_files
         Blogue.use_rouge_codeblock_handler if defined?(Rouge)
+        Blogue.set_checksums
+        Blogue.set_blanket_checksum
       end
     end
   end

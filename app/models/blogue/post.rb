@@ -32,6 +32,10 @@ module Blogue
       def sort_posts(post_a, post_b)
         post_b.time <=> post_a.time
       end
+
+      def cache_key
+        "blogue/#{Blogue.blanket_checksum}"
+      end
     end
 
     attr_reader :path
@@ -78,6 +82,10 @@ module Blogue
           !!(line[/^<!--\s*meta/]..line[/--!>$/])
         end[1..-2].try(:join, "\n") || ''
       ) || {}
+    end
+
+    def cache_key
+      "blogue/posts/#{id}/#{Blogue.checksums[id]}"
     end
 
     def to_partial_path
