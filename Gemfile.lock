@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    blogue (0.0.1)
+    blogue (0.0.3)
       rails (~> 4.0.1.rc1)
 
 GEM
