@@ -1,3 +1,8 @@
+### 0.0.4
+
+* Fix problem where images in assets_path did not precompile
+* Only hide private posts in production
+
 ### 0.0.3
 
 * Add private posts by using _filename or setting private: true in meta
