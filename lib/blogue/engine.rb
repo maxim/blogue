@@ -4,7 +4,7 @@ module Blogue
 
     initializer 'blogue.append_asset_path' do |app|
       app.config.assets.paths << (
-        Blogue.assets_path || "#{Blogue.posts_path}/assets"
+        File.expand_path(Blogue.assets_path || "#{Blogue.posts_path}/assets")
       )
     end
 
