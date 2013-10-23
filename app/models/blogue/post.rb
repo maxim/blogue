@@ -6,10 +6,11 @@ module Blogue
       end
 
       def all
-        all_post_paths.
+        posts = all_post_paths.
           map(&method(:new)).
-          sort(&method(:sort_posts)).
-          reject(&:private?)
+          sort(&method(:sort_posts))
+
+        Rails.env.production? ? posts.reject(&:private?) : posts
       end
 
       def all_post_paths
