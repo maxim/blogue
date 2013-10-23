@@ -1,3 +1,7 @@
+### 0.0.5
+
+* Add Post#cache_key and Post.cache_key for using fragment caching in Rails
+
 ### 0.0.4
 
 * Fix problem where images in assets_path did not precompile
