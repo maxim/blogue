@@ -6,7 +6,10 @@ module Blogue
       end
 
       def all
-        all_post_paths.map(&method(:new)).sort(&method(:sort_posts))
+        all_post_paths.
+          map(&method(:new)).
+          sort(&method(:sort_posts)).
+          reject(&:private?)
       end
 
       def all_post_paths
@@ -64,6 +67,10 @@ module Blogue
       meta_author_name || config_author_name || whoami_author_name
     end
 
+    def private?
+      filename_with_underscore? || meta_private?
+    end
+
     def meta
       YAML.load(
         body.lines.select do |line|
@@ -97,7 +104,7 @@ module Blogue
     end
 
     def parsed_title
-      if body.lines.first =~ /^\s*#\s+(.+)$/
+      if body.lines.find{ |line| line =~ /^\s*#\s+(.+)$/ }
         $1
       end
     end
@@ -116,6 +123,14 @@ module Blogue
 
     def whoami_author_name
       `whoami`.strip
+    end
+
+    def filename_with_underscore?
+      File.basename(path).starts_with?('_')
+    end
+
+    def meta_private?
+      meta['private']
     end
   end
 end
