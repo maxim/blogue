@@ -6,6 +6,8 @@ module Blogue
       app.config.assets.paths << (
         File.expand_path(Blogue.assets_path || "#{Blogue.posts_path}/assets")
       )
+
+      app.config.assets.precompile += ['*.jpg', '*.png', '*.gif']
     end
 
     config.after_initialize do
