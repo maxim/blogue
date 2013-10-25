@@ -1,5 +1,4 @@
 require 'blogue/engine'
-require 'kramdown/converter/blogue'
 require 'digest'
 
 module Blogue
@@ -39,6 +38,7 @@ module Blogue
 
   mattr_accessor :markdown_format_handler
   def self.setup_kramdown_for_handling_md_files
+    require 'kramdown/converter/blogue'
     self.markdown_format_handler ||= default_markdown_format_handler
     ActionView::Template.register_template_handler :md, markdown_format_handler
   end
