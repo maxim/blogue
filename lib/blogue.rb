@@ -1,4 +1,5 @@
 require 'blogue/engine'
+require 'kramdown/converter/blogue'
 require 'digest'
 
 module Blogue
@@ -18,30 +19,33 @@ module Blogue
     Digest::MD5.hexdigest(checksums.values.sort.join)
   end
 
+  mattr_accessor :default_markdown_format_handler
+  self.default_markdown_format_handler = -> template {
+    mdown = ActionView::Template.registered_template_handler(:erb).(template)
+    "Kramdown::Document.new(begin;#{mdown};end).to_blogue"
+  }
+
+  mattr_accessor :default_kramdown_codeblock_handler
+  self.default_kramdown_codeblock_handler = -> el, indent {
+    attr = el.attr.dup
+    lang = extract_code_language!(attr)
+
+    begin
+      Rouge.highlight(el.value, lang || 'text', 'html')
+    rescue RuntimeError
+      Rouge.highlight(el.value, 'text', 'html')
+    end
+  }
+
   mattr_accessor :markdown_format_handler
   def self.setup_kramdown_for_handling_md_files
-    require 'kramdown/converter/blogue'
-
-    self.markdown_format_handler ||= -> template {
-      mdown = ActionView::Template.registered_template_handler(:erb).(template)
-      "Kramdown::Document.new(begin;#{mdown};end).to_blogue"
-    }
-
+    self.markdown_format_handler ||= default_markdown_format_handler
     ActionView::Template.register_template_handler :md, markdown_format_handler
   end
 
   mattr_accessor :kramdown_codeblock_handler
   def self.use_rouge_codeblock_handler
-    self.kramdown_codeblock_handler ||= -> el, indent {
-      attr = el.attr.dup
-      lang = extract_code_language!(attr)
-
-      begin
-        Rouge.highlight(el.value, lang || 'text', 'html')
-      rescue RuntimeError
-        Rouge.highlight(el.value, 'text', 'html')
-      end
-    }
+    self.kramdown_codeblock_handler ||= default_kramdown_codeblock_handler
   end
 
   mattr_accessor :checksums
