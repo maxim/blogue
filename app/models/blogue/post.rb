@@ -33,6 +33,14 @@ module Blogue
         post_b.time <=> post_a.time
       end
 
+      def load_meta(text)
+        YAML.load(
+          text.lines.select do |line|
+            !!(line[/^<!--\s*meta/]..line[/--!>$/])
+          end[1..-2].try(:join, "\n") || ''
+        ) || {}
+      end
+
       def cache_key
         "blogue/#{Blogue.blanket_checksum}"
       end
@@ -77,11 +85,7 @@ module Blogue
     end
 
     def meta
-      YAML.load(
-        body.lines.select do |line|
-          !!(line[/^<!--\s*meta/]..line[/--!>$/])
-        end[1..-2].try(:join, "\n") || ''
-      ) || {}
+      self.class.load_meta(body)
     end
 
     def cache_key
