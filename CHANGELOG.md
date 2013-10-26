@@ -1,3 +1,8 @@
+### 0.0.6
+
+* Move default handler lambdas to default_* accessors for better extensibility
+* Add Post.load_meta to access meta parsing without post object
+
 ### 0.0.5
 
 * Add Post#cache_key and Post.cache_key for using fragment caching in Rails
