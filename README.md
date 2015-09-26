@@ -8,7 +8,7 @@ Blogue is a rails model for static blog posts, wrapped in an engine. It means th
 
 * A `Blogue::Post` model
 * Handler for ".md" views ([kramdown](https://github.com/gettalong/kramdown/) by default)
-* Syntax highlighting for code blocks ([rouge](https://github.com/jayferd/rouge) by default)
+* Syntax highlighting for code blocks ([rouge](https://github.com/jneen/rouge) by default)
 
 ## What you don't get
 
