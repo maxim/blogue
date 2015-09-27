@@ -2,21 +2,22 @@ module Blogue
   class Engine < ::Rails::Engine
     isolate_namespace Blogue
 
-    initializer 'blogue.append_asset_path' do |app|
-      app.config.assets.paths << (
-        File.expand_path(Blogue.assets_path || "#{Blogue.posts_path}/assets")
-      )
-
-      app.config.assets.precompile += ['*.jpg', '*.png', '*.gif']
+    config.before_initialize do
+      Blogue.setup_defaults!
     end
 
-    config.after_initialize do
-      if defined?(Kramdown)
-        Blogue.setup_kramdown_for_handling_md_files
-        Blogue.use_rouge_codeblock_handler if defined?(Rouge)
-        Blogue.set_checksums
-        Blogue.set_blanket_checksum
+    initializer('blogue.setup', :after => 'append_asset_paths') do |app|
+      app.config.assets.paths <<
+        (Blogue.assets_path.respond_to?(:call) ?
+          Blogue.assets_path.call : Blogue.assets_path)
+
+      app.config.assets.precompile += ['*.jpg', '*.png', '*.gif']
+
+      if handler = Blogue.markdown_template_handler
+        ActionView::Template.register_template_handler(:md, handler)
       end
+
+      Blogue.compute_cache_keys!
     end
   end
 end

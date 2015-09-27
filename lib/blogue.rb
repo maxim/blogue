@@ -1,62 +1,57 @@
 require 'blogue/engine'
+require 'blogue/kramdown_template_handler'
 require 'digest'
 
 module Blogue
-  mattr_accessor :author_name
-  mattr_accessor :assets_path
-
-  mattr_accessor :posts_path
-  self.posts_path = 'app/posts'
-
-  mattr_accessor :checksum_calc
-  self.checksum_calc = -> post do
+  DEFAULT_AUTHOR_NAME = `whoami`.strip.freeze
+  DEFAULT_POSTS_PATH = 'app/posts'.freeze
+  DEFAULT_ASSETS_PATH = -> { "#{Blogue.posts_path}/assets" }
+  DEFAULT_COMPUTE_POST_CACHE_KEY = -> post {
     Digest::MD5.hexdigest([post.id, post.author_name, post.body].join)
-  end
-
-  mattr_accessor :blanket_checksum_calc
-  self.blanket_checksum_calc = -> do
-    Digest::MD5.hexdigest(checksums.values.sort.join)
-  end
-
-  mattr_accessor :default_markdown_format_handler
-  self.default_markdown_format_handler = -> template {
-    mdown = ActionView::Template.registered_template_handler(:erb).(template)
-    "Kramdown::Document.new(begin;#{mdown};end).to_blogue"
   }
+  DEFAULT_ROUGE_KRAMDOWN_OPTIONS = {
+    :syntax_highlighter => :rouge,
+    :syntax_highlighter_opts => { default_lang: 'ruby' }.freeze
+  }.freeze
 
-  mattr_accessor :default_kramdown_codeblock_handler
-  self.default_kramdown_codeblock_handler = -> el, indent {
-    attr = el.attr.dup
-    lang = extract_code_language!(attr)
+  class << self
+    attr_accessor \
+      :author_name,
+      :posts_path,
+      :markdown_template_handler,
+      :compute_post_cache_key,
+      :assets_path
 
-    begin
-      Rouge.highlight(el.value, lang || 'text', 'html')
-    rescue RuntimeError
-      Rouge.highlight(el.value, 'text', 'html')
+    attr_reader \
+      :posts_cache_keys,
+      :cache_key,
+      :started_at
+
+    def setup_defaults!
+      self.author_name = DEFAULT_AUTHOR_NAME
+      self.posts_path = DEFAULT_POSTS_PATH
+      self.assets_path = DEFAULT_ASSETS_PATH
+      self.compute_post_cache_key = DEFAULT_COMPUTE_POST_CACHE_KEY
+      self.markdown_template_handler = detect_markdown_template_handler
+      @started_at = Time.current.freeze
     end
-  }
 
-  mattr_accessor :markdown_format_handler
-  def self.setup_kramdown_for_handling_md_files
-    require 'kramdown/converter/blogue'
-    self.markdown_format_handler ||= default_markdown_format_handler
-    ActionView::Template.register_template_handler :md, markdown_format_handler
-  end
+    def compute_cache_keys!
+      @posts_cache_keys = Hash[Post.all.map { |p|
+        [p.id.freeze, Blogue.compute_post_cache_key.(p).freeze]
+      }].freeze
 
-  mattr_accessor :kramdown_codeblock_handler
-  def self.use_rouge_codeblock_handler
-    self.kramdown_codeblock_handler ||= default_kramdown_codeblock_handler
-  end
+      @cache_key = Digest::MD5.hexdigest(
+        @posts_cache_keys.values.sort.join
+      ).freeze
+    end
 
-  mattr_accessor :checksums
-  def self.set_checksums
-    self.checksums = Hash[
-      Post.all.map{ |p| [p.id, checksum_calc.(p)] }
-    ]
-  end
-
-  mattr_accessor :blanket_checksum
-  def self.set_blanket_checksum
-    self.blanket_checksum = blanket_checksum_calc.()
+    def detect_markdown_template_handler
+      if defined?(Kramdown) && defined?(Rouge)
+        KramdownTemplateHandler.new(DEFAULT_ROUGE_KRAMDOWN_OPTIONS)
+      elsif defined?(Kramdown)
+        KramdownTemplateHandler.new
+      end
+    end
   end
 end

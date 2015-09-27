@@ -40,10 +40,6 @@ module Blogue
           end[1..-2].try(:join, "\n") || ''
         ) || {}
       end
-
-      def cache_key
-        "blogue/#{Blogue.blanket_checksum}"
-      end
     end
 
     attr_reader :path
@@ -77,7 +73,7 @@ module Blogue
     end
 
     def author_name
-      meta_author_name || config_author_name || whoami_author_name
+      meta_author_name || config_author_name
     end
 
     def private?
@@ -89,7 +85,7 @@ module Blogue
     end
 
     def cache_key
-      "blogue/posts/#{id}/#{Blogue.checksums[id]}"
+      "blogue/posts/#{id}/#{Blogue.posts_cache_keys[id]}"
     end
 
     def to_partial_path
@@ -132,10 +128,6 @@ module Blogue
 
     def config_author_name
       Blogue.author_name
-    end
-
-    def whoami_author_name
-      `whoami`.strip
     end
 
     def filename_with_underscore?
