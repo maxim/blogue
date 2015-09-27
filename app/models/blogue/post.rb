@@ -1,5 +1,10 @@
+require 'active_model'
+
 module Blogue
   class Post
+    extend ::ActiveModel::Naming
+    include ::ActiveModel::Conversion
+
     class << self
       def find(id)
         all.find{ |p| p.id == id }
@@ -46,6 +51,10 @@ module Blogue
 
     def initialize(path)
       @path = path
+    end
+
+    def persisted?
+      true
     end
 
     def id
