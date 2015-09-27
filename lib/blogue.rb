@@ -18,22 +18,22 @@ module Blogue
     attr_accessor \
       :author_name,
       :posts_path,
-      :markdown_template_preprocessor,
-      :markdown_template_handler,
       :compute_post_cache_key,
       :assets_path
 
     attr_reader \
       :posts_cache_keys,
       :cache_key,
-      :started_at
+      :started_at,
+      :markdown_template_handler
 
     def setup_defaults!
       self.author_name = DEFAULT_AUTHOR_NAME
       self.posts_path = DEFAULT_POSTS_PATH
       self.assets_path = DEFAULT_ASSETS_PATH
       self.compute_post_cache_key = DEFAULT_COMPUTE_POST_CACHE_KEY
-      self.markdown_template_handler = detect_markdown_template_handler
+
+      @markdown_template_handler = detect_markdown_template_handler
       @started_at = Time.current.freeze
     end
 
@@ -47,14 +47,15 @@ module Blogue
       ).freeze
     end
 
+    def markdown_template_preprocessor=(preprocessor)
+      self.markdown_template_handler.preprocessor = preprocessor
+    end
+
     def detect_markdown_template_handler
       if defined?(Kramdown) && defined?(Rouge)
-        KramdownTemplateHandler.new \
-          :kramdown => DEFAULT_ROUGE_KRAMDOWN_OPTIONS,
-          :preprocessor => markdown_template_preprocessor
+        KramdownTemplateHandler.new(DEFAULT_ROUGE_KRAMDOWN_OPTIONS)
       elsif defined?(Kramdown)
-        KramdownTemplateHandler.new \
-          :preprocessor => markdown_template_preprocessor
+        KramdownTemplateHandler.new
       end
     end
   end
