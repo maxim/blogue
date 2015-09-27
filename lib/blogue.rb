@@ -18,6 +18,7 @@ module Blogue
     attr_accessor \
       :author_name,
       :posts_path,
+      :markdown_template_preprocessor,
       :markdown_template_handler,
       :compute_post_cache_key,
       :assets_path
@@ -48,9 +49,12 @@ module Blogue
 
     def detect_markdown_template_handler
       if defined?(Kramdown) && defined?(Rouge)
-        KramdownTemplateHandler.new(DEFAULT_ROUGE_KRAMDOWN_OPTIONS)
+        KramdownTemplateHandler.new \
+          :kramdown => DEFAULT_ROUGE_KRAMDOWN_OPTIONS,
+          :preprocessor => markdown_template_preprocessor
       elsif defined?(Kramdown)
-        KramdownTemplateHandler.new
+        KramdownTemplateHandler.new \
+          :preprocessor => markdown_template_preprocessor
       end
     end
   end
