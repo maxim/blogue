@@ -1,3 +1,26 @@
+### 0.1.0
+
+* Add Rails 4.2 support
+* Add Blogue.markdown_template_preprocessor for hooking into template processing
+* Include ActiveModel::Naming, Conversion, #persisted? => true into Blogue::Post
+* Add convenience reader Blogue.started_at that returns time when Rails booted
+
+* Remove accessor Blogue.blanket_checksum_calc
+* Remove accessor Blogue.default_markdown_format_handler
+* Remove accessor Blogue.default_markdown_codeblock_handler
+* Remove accessor Blogue.blanket_checksum
+
+* Rename Blogue.markdown_format_handler => markdown_template_handler
+* Rename Blogue.checksum_calc => compute_post_cache_key
+* Rename Blogue.checksums => posts_cache_keys
+* Rename Blogue.blanket_checksum => cache_key
+
+* Make Blogue.markdown_template_handler a reader (not accessor)
+* Make Blogue.posts_cache_keys a reader (not accessor)
+* Make Blogue.cache_key a reader (not accessor)
+
+* Change accessor Blogue.assets_path to support callable objects
+
 ### 0.0.6
 
 * Move default handler lambdas to default_* accessors for better extensibility
