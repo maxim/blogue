@@ -1,4 +1,4 @@
-### 0.1.0
+### 0.2.0
 
 * Add Rails 4.2 support
 * Add Blogue.markdown_template_preprocessor for hooking into template processing
@@ -20,6 +20,10 @@
 * Make Blogue.cache_key a reader (not accessor)
 
 * Change accessor Blogue.assets_path to support callable objects
+
+### 0.1.0
+
+* Relax rails dependency
 
 ### 0.0.6
 
