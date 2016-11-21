@@ -1,3 +1,7 @@
+### 0.3.0
+
+* Add Rails 5.0 support
+
 ### 0.2.0
 
 * Add Rails 4.2 support

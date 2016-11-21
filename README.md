@@ -28,7 +28,7 @@ There are thousands of gems that you can pick from to do that stuff.
 2. Add all needed gems to Gemfile and bundle
   ~~~ruby
     gem 'kramdown'
-    gem 'rouge'
+    gem 'rouge', '~> 1.11.1' # 2.x and newer is not supported yet
     gem 'blogue'
   ~~~
 
